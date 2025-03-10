@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Signup Form</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <style>
+        body { background-color: #f8f9fa; padding: 20px; }
+        .container { max-width: 600px; background: white; padding: 20px; border-radius: 10px; }
+        .error { color: red; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="text-center">Signup Form</h2>
+        <form id="signupForm">
+            <label>First Name:</label>
+            <input type="text" id="firstName" class="form-control" required>
+            <span class="error" id="firstNameError"></span>
+
+            <label>Last Name:</label>
+            <input type="text" id="lastName" class="form-control" required>
+            <span class="error" id="lastNameError"></span>
+
+            <label>Email:</label>
+            <input type="email" id="email" class="form-control" required>
+            <span class="error" id="emailError"></span>
+
+            <label>Date of Birth:</label>
+            <input type="text" id="dob" class="form-control" required>
+            <span class="error" id="dobError"></span>
+
+            <label>Age:</label>
+            <input type="number" id="age" class="form-control" required>
+            <span class="error" id="ageError"></span>
+
+            <label>Gender:</label><br>
+            <input type="radio" name="gender" value="Male"> Male
+            <input type="radio" name="gender" value="Female"> Female
+            <span class="error" id="genderError"></span><br>
+
+            <label>Phone Number:</label>
+            <input type="text" id="phone" class="form-control" required>
+            <span class="error" id="phoneError"></span>
+
+            <label>Address:</label>
+            <textarea id="address" class="form-control" required></textarea>
+            <span class="error" id="addressError"></span>
+            
+            <button type="button" class="btn btn-primary mt-3" onclick="validateForm()">Signup</button>
+        </form>
+    </div>
+
+    <div class="container mt-4">
+        <h3 class="text-center">Submitted Data</h3>
+        <table class="table table-bordered" id="dataTable">
+            <thead>
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>DOB</th>
+                    <th>Age</th>
+                    <th>Gender</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <script>
+        function validateForm() {
+            let isValid = true;
+            document.querySelectorAll(".error").forEach(e => e.innerHTML = "");
+            
+            let firstName = document.getElementById("firstName").value;
+            if (!/^[A-Za-z]{4,}$/.test(firstName)) {
+                document.getElementById("firstNameError").innerText = "Must be at least 4 letters";
+                isValid = false;
+            }
+            
+            let lastName = document.getElementById("lastName").value;
+            if (!/^[A-Za-z]{1,}$/.test(lastName)) {
+                document.getElementById("lastNameError").innerText = "Must be at least 1 letter";
+                isValid = false;
+            }
+            
+            let email = document.getElementById("email").value;
+            if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+                document.getElementById("emailError").innerText = "Invalid email format";
+                isValid = false;
+            }
+            
+            let dob = document.getElementById("dob").value;
+            if (dob === "") {
+                document.getElementById("dobError").innerText = "Select a valid date";
+                isValid = false;
+            }
+            
+            let age = document.getElementById("age").value;
+            if (!/^[0-9]{2}$/.test(age)) {
+                document.getElementById("ageError").innerText = "Enter a valid 2-digit age";
+                isValid = false;
+            }
+            
+            let gender = document.querySelector("input[name='gender']:checked");
+            if (!gender) {
+                document.getElementById("genderError").innerText = "Select gender";
+                isValid = false;
+            }
+            
+            let phone = document.getElementById("phone").value;
+            if (!/^[0-9]{10}$/.test(phone)) {
+                document.getElementById("phoneError").innerText = "Phone must be 10 digits";
+                isValid = false;
+            }
+            
+            let address = document.getElementById("address").value;
+            if (address.trim() === "") {
+                document.getElementById("addressError").innerText = "Address cannot be empty";
+                isValid = false;
+            }
+            
+            if (isValid) {
+                let table = document.querySelector("#dataTable tbody");
+                let newRow = table.insertRow();
+                newRow.innerHTML = `<td>${firstName}</td><td>${lastName}</td><td>${email}</td><td>${dob}</td>
+                                    <td>${age}</td><td>${gender.value}</td><td>${phone}</td><td>${address}</td>`;
+                document.getElementById("signupForm").reset();
+            }
+        }
+    </script>
+</body>
+</html>
